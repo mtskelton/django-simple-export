@@ -61,7 +61,7 @@ class Command(BaseCommand):
         for rec in qs:
             export_data = {}
             for field in fields:
-                export_data[field] = self._get_field_data(rec, field)
+                field, export_data[field] = self._get_field_data(rec, field)
 
             export_data['_class'] = {
                 'format_version': DJANGO_SIMPLE_FORMAT_VERSION,
@@ -77,7 +77,7 @@ class Command(BaseCommand):
     def _get_field_data(self, rec, field):
         val = getattr(rec, field)
         if field == 'id':
-            return str(val)
+            return field, str(val)
         if hasattr(val, "id"):
-            return str(val.id)
-        return val
+            return field + "_id", str(val.id)
+        return field, val
