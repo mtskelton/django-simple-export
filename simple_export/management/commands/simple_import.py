@@ -30,8 +30,10 @@ class Command(BaseCommand):
             dec_val = loadb(base64.b64decode(file_rec))
 
             model_class = dec_val['_class']['model']
-            print(model_class)
-
-            #file_rec = file_rec.decode('base64')
-            #print(base64.b64decode(file_rec).decode('utf-8'))
+            rec = model_class()
+            for field in dec_val.keys():
+                if field == '_class':
+                    continue
+                setattr(rec, field, dec_val[field])
+            rec.save()
         f.close()

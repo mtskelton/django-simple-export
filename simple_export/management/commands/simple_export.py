@@ -78,4 +78,6 @@ class Command(BaseCommand):
         val = getattr(rec, field)
         if field == 'id':
             return str(val)
+        if hasattr(val, "id"):
+            return str(val.id)
         return val
